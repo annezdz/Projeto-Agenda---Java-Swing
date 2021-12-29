@@ -1,15 +1,23 @@
 package ui;
 
+import business.ContactBusiness;
+import entity.ContactEntity;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class MainForm extends JFrame {
     private JPanel rootPanel;
     private JButton buttonNewContact;
     private JButton buttonRemove;
     private JTable tableContacts;
+    private JLabel labelContentCount;
+
+    private ContactBusiness mContactBusiness;
 
     public MainForm() {
 
@@ -22,7 +30,32 @@ public class MainForm extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        mContactBusiness = new ContactBusiness();
+
         setListeners();
+
+        loadContacts();
+
+        labelContentCount.setText(mContactBusiness.getContactCountDescription());
+    }
+
+
+    private void loadContacts()
+    {
+        List<ContactEntity> contactList = mContactBusiness.getList();
+
+        String[] columnNames = {"Nome","Telefone"};
+        DefaultTableModel model = new DefaultTableModel(new Object[0][0], columnNames);
+
+        for(ContactEntity i : contactList) {
+            Object[] o = new Object[2];
+            o[0] = i.getName();
+            o[1] = i.getPhone();
+
+            model.addRow(o);
+        }
+        tableContacts.clearSelection();
+        tableContacts.setModel(model);
     }
 
     private void setListeners() {
@@ -42,4 +75,5 @@ public class MainForm extends JFrame {
             }
         });
     }
+
 }
