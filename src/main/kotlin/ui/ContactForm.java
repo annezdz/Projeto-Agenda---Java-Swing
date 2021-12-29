@@ -1,11 +1,15 @@
 package ui;
 
+import business.ContactBusiness;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ContactForm extends JFrame {
+
+    private ContactBusiness mContactBusiness;
 
     private JPanel rootPanel;
     private JTextField textName;
@@ -24,6 +28,8 @@ public class ContactForm extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        mContactBusiness = new ContactBusiness();
+
         setListeners();
     }
     private void setListeners() {
@@ -31,6 +37,18 @@ public class ContactForm extends JFrame {
         buttonSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                try{
+                    String name = textName.getText();
+                    String phone = textPhone.getText();
+
+                    mContactBusiness.save(name,phone);
+
+                    new MainForm();
+                    dispose();
+                }catch (Exception exception) {
+                    JOptionPane.showMessageDialog(new JFrame(),exception.getMessage());
+                }
 
             }
         });

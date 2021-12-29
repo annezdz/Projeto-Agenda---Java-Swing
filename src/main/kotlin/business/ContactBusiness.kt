@@ -19,7 +19,6 @@ class ContactBusiness {
         validate(name, phone)
         val contact = ContactEntity(name, phone)
         ContactRepository.save(contact)
-
     }
 
     fun getContactCountDescription() : String {
